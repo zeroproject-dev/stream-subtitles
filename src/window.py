@@ -17,6 +17,10 @@ class App:
     self.web_server.daemon = True
     self.web_server.start()
 
+    self.load_config()
+    self.create_widgets()
+    self.pack_widgets()
+
     self.frame.grid(row=0, column=0, sticky='nsew')
 
   def create_widgets(self):
@@ -64,7 +68,7 @@ class App:
     self.lbl_ip.pack()
     self.btn_save_settings.pack()
 
-  def save_setting(self):
+  def save_settings(self):
     settings['color'] = self.color
     settings['background_opacity'] = self.scl_background_opacity.get() / 100
     settings['font_size'] = self.entry_font_size.get()
