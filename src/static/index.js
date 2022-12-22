@@ -14,13 +14,14 @@ function updateSettings(settings) {
 
 function setSettings(settings) {
 	let { style } = document.documentElement;
-	style.setProperty('--font-size', settings['font_size']);
+	style.setProperty('--font-size', settings['font_size'] + 'rem');
 	style.setProperty('--font-color', settings['color']);
 	style.setProperty('--opacity', settings['background_opacity']);
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
 	eel.start_voice_recognition();
-	let settings = eel.get_settings()();
+	let settings = await eel.get_settings()();
+	console.log(settings);
 	setSettings(JSON.parse(settings));
 });
