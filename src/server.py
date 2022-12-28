@@ -10,6 +10,10 @@ is_up = True
 speech = SpeechRecognition()
 
 
+def get_num_connections():
+  return len(eel._websockets)
+
+
 @eel.expose
 def start_voice_recognition():
   global speech_thread
@@ -39,7 +43,9 @@ def init_web_server():
   static_path = os.path.join(os.path.dirname(__file__), "static")
   eel.init(path=static_path)
 
-  eel.start("index.html", mode=None, port=int(settings['port']),
+  host = "0.0.0.0" if settings["expose"] else "localhost"
+
+  eel.start("index.html", mode=None, host=host, port=int(settings['port']),
             close_callback=lambda a, b: print("Closing"))
 
 

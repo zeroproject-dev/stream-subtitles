@@ -5,6 +5,7 @@ settings = {
     'background_opacity': 0.3,
     'font_size': 3,
     'port': 9090,
+    'expose': False
 }
 
 
@@ -16,7 +17,8 @@ def load_config():
       settings['background_opacity'] = config['background_opacity']
       settings['font_size'] = config['font_size']
       settings['port'] = config['port']
-  except FileNotFoundError:
+      settings['expose'] = config['expose']
+  except Exception:
     save_config()
 
 
