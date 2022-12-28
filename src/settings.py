@@ -3,7 +3,7 @@ import json
 settings = {
     'color': '#ffffff',
     'background_opacity': 0.3,
-    'font_size': 3,
+    'font_size': "42",
     'port': 9090,
     'expose': False
 }

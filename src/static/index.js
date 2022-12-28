@@ -14,7 +14,7 @@ function updateSettings(settings) {
 
 function setSettings(settings) {
 	let { style } = document.documentElement;
-	style.setProperty('--font-size', settings['font_size'] + 'rem');
+	style.setProperty('--font-size', settings['font_size'] + 'pt');
 	style.setProperty('--font-color', settings['color']);
 	style.setProperty('--opacity', settings['background_opacity']);
 }
