@@ -34,7 +34,7 @@ For build you can use auto-py-to-exe, or just pyinstaller, in this case I'll use
 > Important! You'll need to change one line in the file "env/Lib/site-packages/bottle.py", in the line 74 change the exception to "except Exception:".
 
 ```bash
-pyinstaller --noconfirm --onefile --windowed --add-data "env/Lib/site-packages/vosk;vosk/" --add-data "src/model;model/" --add-data "src/static;static/" --distpath "output" --clean src/main.py
+pyinstaller --noconfirm --onefile --windowed --icon "src/static/logo.ico" --add-data "env/Lib/site-packages/vosk;vosk/" --add-data "src/model;model/" --add-data "src/static;static/" --distpath "output" --clean src/main.py
 ```
 
 This command will create a exe file in the folder "output", you can copy this file to your computer and run it.
@@ -43,7 +43,9 @@ This command will create a exe file in the folder "output", you can copy this fi
 
 To use the program you just start it, and go to a web browser and type the link "http://localhost:9090" (or the port that you set in the program), you'll see a page with a black square in the middle, and when you talk the program will show the transcription in the square.
 
-> Importan! The program use "rem" for the font size
+You can expose the program to your network with the checkbox "expose", and then you can use the program in another computer in the same network with the ip of your pc.
+
+> Importan! The program use "pt" for the font size
 
 For include the subtitles in OBS you can put the same link on a browser source and refresh the scene.
 
