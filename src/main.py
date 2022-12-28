@@ -9,7 +9,7 @@ def close():
 
 def create_window():
   root = Tk()
-  root.geometry('300x300')
+  root.geometry('350x380')
   root.resizable(False, False)
   root.title('Stream Subtitles')
 
