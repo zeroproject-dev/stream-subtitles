@@ -10,11 +10,14 @@ def close():
 
 def create_window():
   root = Tk()
-  root.geometry('350x380')
+  root.geometry('350x400')
   root.resizable(False, False)
   root.title('Stream Subtitles')
-  icon = os.path.join(os.path.dirname(__file__), "static", "logo.ico")
-  root.iconbitmap(icon)
+  icon = os.path.join(os.path.dirname(__file__), "static", "logo.")
+  if os.name == 'nt':
+    root.iconbitmap(icon + "ico")
+  else:
+    root.iconbitmap("@" + icon + "xbm")
 
   Grid.rowconfigure(root, 0, weight=1)
   Grid.columnconfigure(root, 0, weight=1)
