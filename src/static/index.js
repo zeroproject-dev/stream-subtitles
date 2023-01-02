@@ -3,7 +3,15 @@ const $text = document.getElementById('text');
 eel.expose(putText);
 function putText(text) {
 	text = JSON.parse(text);
-	$text.textContent = text['partial'];
+	  split_text = text['partial'].split(' ')
+	  if(split_text.length === 1 && split_text[0] === ''){
+	    $text.innerHTML = '';
+	    return
+	  }
+	  let $last = document.createElement('div');
+	  $text.innerHTML = split_text.join(' ');
+	  $text.appendChild($last);
+	  $last.scrollIntoView();
 }
 
 eel.expose(updateSettings);
@@ -22,6 +30,5 @@ function setSettings(settings) {
 window.addEventListener('load', async () => {
 	eel.start_voice_recognition();
 	let settings = await eel.get_settings()();
-	console.log(settings);
 	setSettings(JSON.parse(settings));
 });
