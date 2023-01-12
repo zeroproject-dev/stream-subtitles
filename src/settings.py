@@ -7,7 +7,8 @@ settings = {
     'background_opacity': 0.7,
     'font_size': "32",
     'port': "9090",
-    'expose': False
+    'expose': False,
+    'font_family': 'Arial'
 }
 
 
@@ -42,6 +43,7 @@ def load_config():
       settings['font_size'] = config['font_size']
       settings['port'] = config['port']
       settings['expose'] = config['expose']
+      settings['font_family'] = config['font_family']
   except Exception:
     save_config()
 

@@ -1,4 +1,6 @@
 from tkinter import *
+from tkinter import ttk
+from tkinter import font
 from tkinter import colorchooser
 from server import init_web_server, close, update_settings, get_num_connections
 from settings import settings, save_config, load_config
@@ -12,6 +14,8 @@ class App:
 
     self.frame.grid_rowconfigure(0, weight=1)
     self.frame.grid_columnconfigure(0, weight=1)
+
+    # print(font.families())
 
     self.frame.config(padx=10, pady=10)
 
@@ -59,6 +63,13 @@ class App:
         self.frame_subtitles, validate='key', validatecommand=vcmd)
     self.entry_font_size.insert(0, settings['font_size'])
 
+    self.selected_family = StringVar(value=settings['font_family'])
+    self.lbl_font_family = Label(self.frame_subtitles, text='Font Family: ')
+    self.cbox_font_family = ttk.Combobox(
+        self.frame_subtitles, textvariable=self.selected_family)
+
+    self.populate_font_families()
+
     self.lbl_port = Label(self.frame_network, text='Port: ')
     self.entry_port = Entry(
         self.frame_network, validate='key', validatecommand=vcmd)
@@ -83,6 +94,9 @@ class App:
     close()
     self.frame.destroy()
 
+  def populate_font_families(self):
+    self.cbox_font_family['values'] = list(font.families())
+
   def pack_widgets(self):
     self.lbl_text_color.pack()
     self.lbl_color.pack()
@@ -94,6 +108,9 @@ class App:
     self.lbl_port.pack()
     self.entry_port.pack()
     self.cb_expose.pack()
+    self.lbl_font_family.pack()
+    self.cbox_font_family.pack()
+    self.cbox_font_family['state'] = 'readonly'
     self.txt_ip.grid(row=2, column=0)
     self.btn_save_settings.grid(row=3, column=0)
 
@@ -102,6 +119,7 @@ class App:
     settings['font_size'] = self.entry_font_size.get()
     settings['port'] = self.entry_port.get()
     settings['expose'] = self.expose.get() == 1
+    settings['font_family'] = self.selected_family.get()
     save_config()
     self.load_config()
 
