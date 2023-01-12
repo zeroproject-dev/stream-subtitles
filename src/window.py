@@ -6,6 +6,7 @@ from server import init_web_server, close, update_settings, get_num_connections
 from settings import settings, save_config, load_config
 from threading import Thread
 import json
+import webbrowser
 
 
 class App:
@@ -68,6 +69,9 @@ class App:
     self.cbox_font_family = ttk.Combobox(
         self.frame_subtitles, textvariable=self.selected_family)
 
+    self.lbl_webpage = Label(
+        self.frame_subtitles, text='My website: https://zeroproject.dev/', fg='blue', cursor='hand2')
+
     self.populate_font_families()
 
     self.lbl_port = Label(self.frame_network, text='Port: ')
@@ -110,6 +114,9 @@ class App:
     self.cb_expose.pack()
     self.lbl_font_family.pack()
     self.cbox_font_family.pack()
+    self.lbl_webpage.pack()
+    self.lbl_webpage.bind(
+        "<Button-1>", lambda e: webbrowser.open_new("https://zeroproject.dev/"))
     self.cbox_font_family['state'] = 'readonly'
     self.txt_ip.grid(row=2, column=0)
     self.btn_save_settings.grid(row=3, column=0)
