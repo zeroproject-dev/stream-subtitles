@@ -42,8 +42,11 @@ class App:
     self.frame.grid(row=0, column=0, sticky='nsew')
 
   def create_widgets(self):
-    vcmd = (self.frame.register(self.validate),
-            '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+    vcmd_font_size = (self.frame.register(self.validate_font_size),
+                      '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+
+    vcmd_port = (self.frame.register(self.validate_port),
+                 '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 
     self.lbl_text_color = Label(self.frame_subtitles, text='Text Color: ')
     self.lbl_color = Label(self.frame_subtitles,
@@ -59,7 +62,7 @@ class App:
 
     self.lbl_font_size = Label(self.frame_subtitles, text='Font Size: ')
     self.entry_font_size = Entry(
-        self.frame_subtitles, validate='key', validatecommand=vcmd)
+        self.frame_subtitles, validate='key', validatecommand=vcmd_font_size)
     self.entry_font_size.insert(0, settings['font_size'])
 
     self.selected_family = StringVar(value=settings['font_family'])
@@ -74,20 +77,18 @@ class App:
 
     self.lbl_port = Label(self.frame_network, text='Port: ')
     self.entry_port = Entry(
-        self.frame_network, validate='key', validatecommand=vcmd)
+        self.frame_network, validate='key', validatecommand=vcmd_port)
     self.entry_port.insert(0, settings['port'])
 
     self.expose = IntVar(value=settings['expose'])
     self.cb_expose = Checkbutton(
         self.frame_network, text='Expose to network?', variable=self.expose)
 
-    ip_text = f'http://localhost:{settings["port"]}'
-    ip_text += f"\nor\nhttp://{str(self.host_ip)}:{settings['port']}" if settings["expose"] else ""
+    self.lbl_localhost = Label(
+        self.frame, text=f'http://localhost:{settings["port"]}', fg='blue', cursor='hand2')
 
-    self.txt_ip = Text(
-        self.frame, height=3 if settings['expose'] else 1, borderwidth=0)
-    self.txt_ip.insert(1.0, ip_text)
-    self.txt_ip.configure(bg=self.frame.cget('bg'), state=DISABLED)
+    self.lbl_network = Label(
+        self.frame, text=f'http://{str(self.host_ip)}:{settings["port"]}', fg='blue', cursor='hand2')
 
     self.btn_save_settings = Button(
         self.frame, text='Save Settings', command=self.save_settings)
@@ -116,8 +117,14 @@ class App:
     self.lbl_webpage.bind(
         "<Button-1>", lambda e: webbrowser.open_new("https://zeroproject.dev/"))
     self.cbox_font_family['state'] = 'readonly'
-    self.txt_ip.grid(row=2, column=0)
-    self.btn_save_settings.grid(row=3, column=0)
+    self.lbl_localhost.grid(row=2, column=0)
+    self.lbl_localhost.bind(
+        "<Button-1>", lambda e: webbrowser.open_new(f'http://localhost:{settings["port"]}'))
+    if settings['expose']:
+      self.lbl_network.grid(row=3, column=0)
+      self.lbl_network.bind(
+          "<Button-1>", lambda e: webbrowser.open_new(f'http://{str(self.host_ip)}:{settings["port"]}'))
+    self.btn_save_settings.grid(row=4, column=0)
 
   def save_settings(self):
     settings['background_opacity'] = self.scl_background_opacity.get() / 100
@@ -139,12 +146,31 @@ class App:
   def load_config(self):
     load_config()
 
-  def validate(self, action, index, value_if_allowed,
-               prior_value, text, validation_type, trigger_type, widget_name):
+  def validate_font_size(self, action, index, value_if_allowed,
+                         prior_value, text, validation_type, trigger_type, widget_name):
     if value_if_allowed:
       try:
-        int(value_if_allowed)
-        return True and text != " "
+        r = int(value_if_allowed)
+        if text == " ":
+          return False
+        if r < 0 or r > 128:
+          return False
+        return True
+      except ValueError:
+        return False
+    else:
+      return False
+
+  def validate_port(self, action, index, value_if_allowed,
+                    prior_value, text, validation_type, trigger_type, widget_name):
+    if value_if_allowed:
+      try:
+        r = int(value_if_allowed)
+        if text == " ":
+          return False
+        if r < 0 or r > 65535:
+          return False
+        return True
       except ValueError:
         return False
     else:
