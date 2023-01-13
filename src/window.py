@@ -16,8 +16,6 @@ class App:
     self.frame.grid_rowconfigure(0, weight=1)
     self.frame.grid_columnconfigure(0, weight=1)
 
-    # print(font.families())
-
     self.frame.config(padx=10, pady=10)
 
     self.frame_subtitles = LabelFrame(self.frame, text="Subtitles")

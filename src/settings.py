@@ -25,8 +25,6 @@ def get_datadir() -> pathlib.Path:
 
 config_path = get_datadir() / "zeroproject/stream-subtitles"
 
-print("Config path: " + str(config_path))
-
 try:
   if not config_path.exists():
     config_path.mkdir(parents=True)
