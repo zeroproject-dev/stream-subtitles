@@ -1,8 +1,9 @@
 import eel
 import os
 import json
+import socket
 from speech_recognition import SpeechRecognition
-from settings import settings
+from settings import settings, save_config
 
 speech_thread = None
 is_up = True
@@ -39,9 +40,28 @@ def update_settings(settings):
   eel.updateSettings(settings)()
 
 
+def verify_port():
+  port = int(settings['port'])
+  if port > 1024 and port < 65535:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    while sock.connect_ex(("localhost", port)) == 0:
+
+      port += 1
+      if port > 65534:
+        port = 1024
+
+    sock.close()
+
+    settings['port'] = port
+    save_config()
+
+
 def init_web_server():
   static_path = os.path.join(os.path.dirname(__file__), "static")
   eel.init(path=static_path)
+
+  verify_port()
 
   host = "0.0.0.0" if settings["expose"] else "localhost"
 
