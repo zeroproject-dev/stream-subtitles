@@ -10,7 +10,7 @@ def close():
 
 def create_window():
   root = Tk()
-  root.geometry('350x500')
+  root.geometry('350x450')
   root.resizable(False, False)
   root.title('Stream Subtitles')
   icon = os.path.join(os.path.dirname(__file__), "static", "logo.")
